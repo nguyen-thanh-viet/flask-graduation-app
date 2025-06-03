@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: flask-graduation-app         # Tên dịch vụ của bạn (tuỳ chọn)
+    env: python                        # Môi trường là Python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"  # 'app' là tên file Python, 'app' thứ 2 là biến Flask
+    plan: free                         # Tuỳ chọn: gói miễn phí (nếu bạn dùng free)
