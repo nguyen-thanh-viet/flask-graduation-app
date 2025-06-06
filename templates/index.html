@@ -1,0 +1,218 @@
+<html>
+<head>
+    <title>Dự đoán xếp loại tốt nghiệp SV</title>
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <style>
+        .row {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <p>
+    <h1 align="center">Dự đoán xếp loại tốt nghiệp SV</h1>
+    </p>
+    <div class="container" style="border: 1px groove lightgreen; border-radius: 10px; padding: 0 30px">
+        <div class="row">
+            <h3>Hãy nhập vào các thông tin SV để dự đoán!</h3>
+
+            <form action="{{url_for('getprediction')}}" method="post">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                         <label for="MaNganh" class="col-sm-4 col-form-label">Mã ngành:</label>
+                        <div class="col-sm-6">
+                            <select name="MaNganh" id="MaNganh" class="form-control">
+                                <option value="1"
+                                    {% if ma_nganh == '1' %}
+                                        selected="selected"
+                                    {% endif %}>Công nghệ thông tin</option>
+
+                                <option value="0"
+                                    {% if ma_nganh == '0' %}
+                                        selected="selected"
+                                    {% endif %}>Sư phạm Tin học</option>
+                            </select>
+                        </div>
+                    </div>
+                   <div class="col-sm-6">
+                        <label for="GioiTinh" class="col-sm-4 col-form-label">Giới tính:</label>
+                        <div class="col-sm-4">
+                            <select name="GioiTinh" id="GioiTinh" class="form-control">
+                                <option value="1"
+                                    {% if gioi_tinh == '1' %}
+                                        selected="selected"
+                                    {% endif %}>Nam</option>
+
+                                <option value="0"
+                                    {% if gioi_tinh == '0' %}
+                                        selected="selected"
+                                    {% endif %}>Nữ</option>
+                            </select>
+                        </div>
+                   </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="NamSinh" class="col-sm-4 col-form-label">Năm sinh:</label>
+                        <div class="col-sm-4">
+                            <input type="number" class="form-control" id="NamSinh" name="NamSinh" value=
+                            {% if nam_sinh %}
+                                '{{nam_sinh}}'
+                            {% else %}
+                                '2000'
+                            {% endif %} min="1985" max="2005" step="1" required="required">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="NamNhapHoc" class="col-sm-4 col-form-label">Năm nhập học:</label>
+                        <div class="col-sm-4">
+                            <input type="number" class="form-control" id="NamNhapHoc" name="NamNhapHoc" value=
+                            {% if nam_nhap_hoc %}
+                                '{{nam_nhap_hoc}}'
+                            {% else %}
+                                '2022'
+                            {% endif %} min="2014" max="2025" step="1" required="required">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="QueQuan" class="col-sm-4 col-form-label">Quê quán:</label>
+                        <div class="col-sm-4">
+                            <select name="QueQuan" id="QueQuan" class="form-control">
+                                {% for x in que_quan_list %}
+                                    <option value="{{x}}"
+                                        {% if que_quan == x %}
+                                            selected="selected"
+                                        {% endif %}>{{x}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="DanToc" class="col-sm-4 col-form-label">Dân tộc:</label>
+                        <div class="col-sm-4">
+                            <select name="DanToc" id="DanToc" class="form-control">
+                                {% for x in dan_toc_list %}
+                                    <option value="{{x}}"
+                                        {% if dan_toc == x %}
+                                            selected="selected"
+                                        {% endif %}>{{x}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="GDTC1" class="col-sm-4 col-form-label">Điểm GDTC 1:</label>
+                        <div class="col-sm-3">
+                            <input type="number" class="form-control" id="GDTC1" name="GDTC1" value=
+                            {% if gdtc1 %}
+                                '{{gdtc1}}'
+                            {% else %}
+                                '5.5'
+                            {% endif %} min="0" max="10" step="0.1" required="required">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="TA1" class="col-sm-4 col-form-label">Điểm Tiếng Anh 1:</label>
+                        <div class="col-sm-3">
+                            <input type="number" class="form-control" id="TA1" name="TA1" value=
+                            {% if ta1 %}
+                                '{{ta1}}'
+                            {% else %}
+                                '5.5'
+                            {% endif %} min="0" max="10" step="0.1" required="required">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="CSLT" class="col-sm-4 col-form-label">Điểm Cơ sở lập trình:</label>
+                        <div class="col-sm-3">
+                            <input type="number" class="form-control" id="CSLT" name="CSLT" value=
+                            {% if cslt %}
+                                '{{cslt}}'
+                            {% else %}
+                                '5.5'
+                            {% endif %} min="0" max="10" step="0.1" required="required">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="TBC_HK1" class="col-sm-4 col-form-label">Điểm TBC_HK1:</label>
+                        <div class="col-sm-3">
+                            <input type="number" class="form-control" id="TBC_HK1" name="TBC_HK1" value=
+                            {% if tbc_hk1 %}
+                                {{tbc_hk1}}
+                            {% else %}
+                                2.0
+                            {% endif %} min="0" max="4" step="0.01" required="required">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="TBCTL_HK1" class="col-sm-4 col-form-label">Điểm TBCTL_HK1:</label>
+                        <div class="col-sm-3">
+                            <input type="number" class="form-control" id="TBCTL_HK1" name="TBCTL_HK1" value=
+                            {% if tbctl_hk1 %}
+                                {{tbctl_hk1}}
+                            {% else %}
+                                2.0
+                            {% endif %} min="0" max="4" step="0.01" required="required">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label for="TBC_HK2" class="col-sm-4 col-form-label">Điểm TBC_HK2:</label>
+                        <div class="col-sm-3">
+                            <input type="number" class="form-control" id="TBC_HK2" name="TBC_HK2" value=
+                            {% if tbc_hk2 %}
+                                {{tbc_hk2}}
+                            {% else %}
+                                2.0
+                            {% endif %} min="0" max="4" step="0.01" required="required">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="TBCTL_HK2" class="col-sm-4 col-form-label">Điểm TBCTL_HK2:</label>
+                        <div class="col-sm-3">
+                            <input type="number" class="form-control" id="TBCTL_HK2" name="TBCTL_HK2" value=
+                            {% if tbctl_hk2 %}
+                                {{tbctl_hk2}}
+                            {% else %}
+                                2.0
+                            {% endif %} min="0" max="4" step="0.01" required="required">
+                        </div>
+                    </div>
+
+                </div>
+                <br />
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-hand-right"></span> Dự đoán!
+                </button>
+            </form>
+          {% if answer %}
+            <h3 align="center" style="color: lightslategray; font-weight: bold">Kết quả xếp loại tốt nghiệp:</h3>
+            <div class="alert alert-info lead text-center"><strong>{{answer}}</strong></div>
+          {% endif %}
+        </div>
+    </div>
+</body>
+</html>
