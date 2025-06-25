@@ -1,30 +1,99 @@
+%%writefile templates/index.html
+
 <html>
 <head>
     <title>Dự đoán xếp loại tốt nghiệp SV</title>
     <meta charset="utf-8" />
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <style>
-        .row {
-            margin-bottom: 10px;
-        }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f7f6; /* Light gray background */
+        padding-top: 20px;
+    }
+    .container {
+        background-color: #ffffff; /* White background for the form */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin-top: 20px;
+        border-radius: 10px;
+    }
+    h1 {
+        color: #2c3e50; /* Dark blue for main title */
+        font-weight: bold;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    h3 {
+        color: #34495e; /* Slightly lighter dark blue for subtitles */
+        margin-top: 25px;
+        margin-bottom: 20px;
+    }
+    .form-control {
+        border-radius: 5px;
+        border: 1px solid #dcdcdc;
+    }
+    .col-form-label {
+        font-weight: 600;
+        color: #555;
+        display: flex; /* Allow icon and text to be on the same line */
+        align-items: center; /* Vertically align icon and text */
+    }
+    .col-form-label i {
+        margin-right: 8px; /* Space between icon and text */
+        color: #3498db; /* Blue color for icons */
+        font-size: 1.3em; /* Slightly larger icon size */
+    }
+    .btn-primary {
+        background-color: #28a745; /* Green for the button */
+        border-color: #28a745;
+        padding: 10px 25px;
+        font-size: 1.1em;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+    .alert-info {
+        background-color: #d1ecf1;
+        border-color: #bee5eb;
+        color: #0c5460;
+        margin-top: 30px;
+        padding: 15px;
+        border-radius: 5px;
+    }
+    .alert-info strong {
+        color: #0c5460;
+    }
+    .row {
+        margin-bottom: 15px; /* Increase space between rows */
+    }
+
     </style>
+
 </head>
 
 <body>
-    <p>
-    <h1 align="center">Dự đoán xếp loại tốt nghiệp SV</h1>
-    </p>
+    
+
     <div class="container" style="border: 1px groove lightgreen; border-radius: 10px; padding: 0 30px">
         <div class="row">
+            <img src="Images/pdu_banner.jpg" width="100%" />
+        </div>
+        <div class="row">
+            <h1>Mô hình dự đoán xếp loại tốt nghiệp cho SV kết thúc năm 1</h1>
             <h3>Hãy nhập vào các thông tin SV để dự đoán!</h3>
-
             <form action="{{url_for('getprediction')}}" method="post">
 
                 <div class="row">
                     <div class="col-sm-6">
-                         <label for="MaNganh" class="col-sm-4 col-form-label">Mã ngành:</label>
+                         <label for="MaNganh" class="col-sm-4 col-form-label"><i class="fas fa-graduation-cap"></i> Mã ngành:</label>
                         <div class="col-sm-6">
                             <select name="MaNganh" id="MaNganh" class="form-control">
                                 <option value="1"
@@ -40,7 +109,7 @@
                         </div>
                     </div>
                    <div class="col-sm-6">
-                        <label for="GioiTinh" class="col-sm-4 col-form-label">Giới tính:</label>
+                        <label for="GioiTinh" class="col-sm-4 col-form-label"><i class="fas fa-venus-mars"></i> Giới tính:</label>
                         <div class="col-sm-4">
                             <select name="GioiTinh" id="GioiTinh" class="form-control">
                                 <option value="1"
@@ -59,7 +128,7 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        <label for="NamSinh" class="col-sm-4 col-form-label">Năm sinh:</label>
+                        <label for="NamSinh" class="col-sm-4 col-form-label"><i class="fas fa-birthday-cake"></i> Năm sinh:</label>
                         <div class="col-sm-4">
                             <input type="number" class="form-control" id="NamSinh" name="NamSinh" value=
                             {% if nam_sinh %}
@@ -70,7 +139,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <label for="NamNhapHoc" class="col-sm-4 col-form-label">Năm nhập học:</label>
+                        <label for="NamNhapHoc" class="col-sm-4 col-form-label"><i class="fas fa-school"></i> Năm nhập học:</label>
                         <div class="col-sm-4">
                             <input type="number" class="form-control" id="NamNhapHoc" name="NamNhapHoc" value=
                             {% if nam_nhap_hoc %}
@@ -85,7 +154,7 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        <label for="QueQuan" class="col-sm-4 col-form-label">Quê quán:</label>
+                        <label for="QueQuan" class="col-sm-4 col-form-label"><i class="fas fa-map-marker-alt"></i> Quê quán:</label>
                         <div class="col-sm-4">
                             <select name="QueQuan" id="QueQuan" class="form-control">
                                 {% for x in que_quan_list %}
@@ -98,7 +167,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <label for="DanToc" class="col-sm-4 col-form-label">Dân tộc:</label>
+                        <label for="DanToc" class="col-sm-4 col-form-label"><i class="fas fa-users"></i> Dân tộc:</label>
                         <div class="col-sm-4">
                             <select name="DanToc" id="DanToc" class="form-control">
                                 {% for x in dan_toc_list %}
@@ -115,7 +184,7 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        <label for="GDTC1" class="col-sm-4 col-form-label">Điểm GDTC 1:</label>
+                        <label for="GDTC1" class="col-sm-4 col-form-label"><i class="fas fa-running"></i> Điểm GDTC 1:</label>
                         <div class="col-sm-3">
                             <input type="number" class="form-control" id="GDTC1" name="GDTC1" value=
                             {% if gdtc1 %}
@@ -126,7 +195,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <label for="TA1" class="col-sm-4 col-form-label">Điểm Tiếng Anh 1:</label>
+                        <label for="TA1" class="col-sm-4 col-form-label"><i class="fas fa-language"></i> Điểm Tiếng Anh 1:</label>
                         <div class="col-sm-3">
                             <input type="number" class="form-control" id="TA1" name="TA1" value=
                             {% if ta1 %}
@@ -140,7 +209,7 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        <label for="CSLT" class="col-sm-4 col-form-label">Điểm Cơ sở lập trình:</label>
+                        <label for="CSLT" class="col-sm-4 col-form-label"><i class="fas fa-laptop-code"></i> Điểm Cơ sở lập trình:</label>
                         <div class="col-sm-3">
                             <input type="number" class="form-control" id="CSLT" name="CSLT" value=
                             {% if cslt %}
@@ -154,7 +223,7 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        <label for="TBC_HK1" class="col-sm-4 col-form-label">Điểm TBC_HK1:</label>
+                        <label for="TBC_HK1" class="col-sm-4 col-form-label"><i class="fas fa-chart-line"></i> Điểm TBC_HK1:</label>
                         <div class="col-sm-3">
                             <input type="number" class="form-control" id="TBC_HK1" name="TBC_HK1" value=
                             {% if tbc_hk1 %}
@@ -165,7 +234,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <label for="TBCTL_HK1" class="col-sm-4 col-form-label">Điểm TBCTL_HK1:</label>
+                        <label for="TBCTL_HK1" class="col-sm-4 col-form-label"><i class="fas fa-chart-bar"></i> Điểm TBCTL_HK1:</label>
                         <div class="col-sm-3">
                             <input type="number" class="form-control" id="TBCTL_HK1" name="TBCTL_HK1" value=
                             {% if tbctl_hk1 %}
@@ -180,7 +249,7 @@
 
                 <div class="row">
                     <div class="col-sm-6">
-                        <label for="TBC_HK2" class="col-sm-4 col-form-label">Điểm TBC_HK2:</label>
+                        <label for="TBC_HK2" class="col-sm-4 col-form-label"><i class="fas fa-chart-line"></i> Điểm TBC_HK2:</label>
                         <div class="col-sm-3">
                             <input type="number" class="form-control" id="TBC_HK2" name="TBC_HK2" value=
                             {% if tbc_hk2 %}
@@ -191,7 +260,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <label for="TBCTL_HK2" class="col-sm-4 col-form-label">Điểm TBCTL_HK2:</label>
+                        <label for="TBCTL_HK2" class="col-sm-4 col-form-label"><i class="fas fa-chart-bar"></i> Điểm TBCTL_HK2:</label>
                         <div class="col-sm-3">
                             <input type="number" class="form-control" id="TBCTL_HK2" name="TBCTL_HK2" value=
                             {% if tbctl_hk2 %}
@@ -209,7 +278,7 @@
                 </button>
             </form>
           {% if answer %}
-            <h3 align="center" style="color: lightslategray; font-weight: bold">Kết quả xếp loại tốt nghiệp:</h3>
+            <h3 align="center" style="color: lightslategray; font-weight: bold">Dự đoán kết quả xếp loại tốt nghiệp:</h3>
             <div class="alert alert-info lead text-center"><strong>{{answer}}</strong></div>
           {% endif %}
         </div>
